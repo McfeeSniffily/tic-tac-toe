@@ -1,4 +1,4 @@
-#include <gtk/gtk.h>
+п»ї#include <gtk/gtk.h>
 #include <iostream>
 #include <gdk/gdkkeysyms.h>
 #include <stdio.h>
@@ -10,10 +10,10 @@
 #define WW 400
 #define HH 50
 #define RR 40
-#define the_cross_has_been_planted cross=1 // поставлен крестик
-#define the_zero_has_been_planted cross=0 // поставлен нолик в ответ
+#define the_cross_has_been_planted cross=1 // РїРѕСЃС‚Р°РІР»РµРЅ РєСЂРµСЃС‚РёРє
+#define the_zero_has_been_planted cross=0 // РїРѕСЃС‚Р°РІР»РµРЅ РЅРѕР»РёРє РІ РѕС‚РІРµС‚
 
-static const int INFINITY = 1000000; // максимальное значение статической оценочной функции
+static const int INFINITY = 1000000; // РјР°РєСЃРёРјР°Р»СЊРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ СЃС‚Р°С‚РёС‡РµСЃРєРѕР№ РѕС†РµРЅРѕС‡РЅРѕР№ С„СѓРЅРєС†РёРё
 GError *error;
 GdkGC *gc;
 GdkDrawable *w;
@@ -24,12 +24,12 @@ int game = 0,x_b = 10, y_b = 10, x_m = 10, y_m = 10, step = 1,cross = 0;
 double x_mouse, y_mouse;
 
 
-struct position // Вершины дерева
+struct position // Р’РµСЂС€РёРЅС‹ РґРµСЂРµРІР°
 {
 	int board[10][10];
 	int player;
 };
-struct Move // Координаты перемещения
+struct Move // РљРѕРѕСЂРґРёРЅР°С‚С‹ РїРµСЂРµРјРµС‰РµРЅРёСЏ
 {
 	int x;
 	int y;
@@ -38,7 +38,7 @@ struct Move // Координаты перемещения
 int MinMove (position* p, int depth, int alpha, int beta);
 int MaxMove (position* p, int depth, int alpha, int beta);
 
-// генерируем все возможные ходы для текущей позиции, 
+// РіРµРЅРµСЂРёСЂСѓРµРј РІСЃРµ РІРѕР·РјРѕР¶РЅС‹Рµ С…РѕРґС‹ РґР»СЏ С‚РµРєСѓС‰РµР№ РїРѕР·РёС†РёРё, 
 int generate_moves (position *p, std::list< Move > &move_list) 
 { 
 	int n = 0;
@@ -55,7 +55,7 @@ int generate_moves (position *p, std::list< Move > &move_list)
 		}
 return n;
 }
-// проверяем кто выиграл
+// РїСЂРѕРІРµСЂСЏРµРј РєС‚Рѕ РІС‹РёРіСЂР°Р»
 int check_win( int (*a)[ 10 ] ) 
 	{
 	int game = -1;
@@ -86,19 +86,19 @@ int check_win( int (*a)[ 10 ] )
 			}
 		return game;
 	} 
-// находит максимум из двух величин
+// РЅР°С…РѕРґРёС‚ РјР°РєСЃРёРјСѓРј РёР· РґРІСѓС… РІРµР»РёС‡РёРЅ
 int max(int a, int b)
 {
 	if (a > b) return a;
 	else return b;
 }
-// находит максимум из двух величин
+// РЅР°С…РѕРґРёС‚ РјР°РєСЃРёРјСѓРј РёР· РґРІСѓС… РІРµР»РёС‡РёРЅ
 int min(int a, int b)
 {
 	if (a < b) return a;
 	else return b;
 }
-// делаем ход в m крестиком или ноликом
+// РґРµР»Р°РµРј С…РѕРґ РІ m РєСЂРµСЃС‚РёРєРѕРј РёР»Рё РЅРѕР»РёРєРѕРј
 void domove(Move *m, position *p)
 {
 if (p->player == 1)
@@ -108,12 +108,12 @@ if (p->player == 2)
 }
 
 
-// отменяем ход который делали в m
+// РѕС‚РјРµРЅСЏРµРј С…РѕРґ РєРѕС‚РѕСЂС‹Р№ РґРµР»Р°Р»Рё РІ m
 void undomove(Move *m, position *p)
 {
 	p->board[m->x][m->y] = 0;
 }
-// оцениваем текущую позицию
+// РѕС†РµРЅРёРІР°РµРј С‚РµРєСѓС‰СѓСЋ РїРѕР·РёС†РёСЋ
 int evaluate_position(int (*a)[ 10 ])
 	{
 	int evaluation = 0;
@@ -122,10 +122,10 @@ int evaluate_position(int (*a)[ 10 ])
 	int game = check_win(a);
 		if (game == 1) evaluation = -INFINITY;
 		if (game == 2) evaluation = INFINITY;
-		//если никто не выиграл
+		//РµСЃР»Рё РЅРёРєС‚Рѕ РЅРµ РІС‹РёРіСЂР°Р»
 		if (game == -1) 
 		{
-		//свободные ходы по горизонтали
+		//СЃРІРѕР±РѕРґРЅС‹Рµ С…РѕРґС‹ РїРѕ РіРѕСЂРёР·РѕРЅС‚Р°Р»Рё
 		for (int t = 0; t < 10; t++) {
 			for (int i = 0; i < 6; i++) {
 			if (( a[i][t] == 1 || a[i][t] == 0 ) && ( a[i + 1][t] == 1 || a[i + 1][t] == 0 ) && 
@@ -139,7 +139,7 @@ int evaluate_position(int (*a)[ 10 ])
 			if (( a[i][t] == 1 || a[i][t] == 0 ) && ( a[i + 1][t] == 1 ) && ( a[i + 2][t] == 1 ) && ( a[i + 3][t] == 1 ) && ( a[i + 4][t] == 1 || a[i + 4][t] == 0 )) eval_x += 1000;	
 				}
 			}
-		////свободные ходы по вертикали
+		////СЃРІРѕР±РѕРґРЅС‹Рµ С…РѕРґС‹ РїРѕ РІРµСЂС‚РёРєР°Р»Рё
 		for (int t = 0; t < 10; t++) {
 			for (int j = 0; j < 6; j++) {
 			if (( a[t][j] == 1 || a[t][j] == 0 ) && ( a[t][j + 1] == 1 || a[t][j + 1] == 0 ) && 
@@ -152,7 +152,7 @@ int evaluate_position(int (*a)[ 10 ])
 			if (( a[t][j] == 1 || a[t][j] == 0 ) && ( a[t][j + 1] == 1 ) && ( a[t][j + 2] == 1 ) && ( a[t][j + 3] == 1 ) && ( a[t][j + 4] == 1 || a[t][j + 4] == 0 )) eval_x += 1000;	
 				}
 			}
-		////свободные ходы по диагонали
+		////СЃРІРѕР±РѕРґРЅС‹Рµ С…РѕРґС‹ РїРѕ РґРёР°РіРѕРЅР°Р»Рё
 		for (int t = 0; t < 6; t++) {
 			for (int j = 0; j < 6; j++) {
 			if (( a[j][t] == 1 || a[j][t] == 0 ) && ( a[j + 1][t + 1] == 1 || a[j + 1][t + 1] == 0 ) && 
@@ -190,7 +190,7 @@ int evaluate_position(int (*a)[ 10 ])
 		return evaluation;
 	}  
 
-// собственно альфа-бета процедура, возвращающая лучший ход нолика
+// СЃРѕР±СЃС‚РІРµРЅРЅРѕ Р°Р»СЊС„Р°-Р±РµС‚Р° РїСЂРѕС†РµРґСѓСЂР°, РІРѕР·РІСЂР°С‰Р°СЋС‰Р°СЏ Р»СѓС‡С€РёР№ С…РѕРґ РЅРѕР»РёРєР°
 Move AlphaBeta (position* p, int depth, int alpha, int beta)
 {
 		std::list < Move > Move_list;	
@@ -198,55 +198,55 @@ Move AlphaBeta (position* p, int depth, int alpha, int beta)
 		int bestvalue = -INFINITY;
 		int value = -INFINITY;
 
-		p->player = 2; // ходит нолик
-		generate_moves(p,Move_list); // генерируем все возможные ответы нолика
-		while ( !Move_list.empty() ) // пока список возможных ответов нолика не пуст
-			{						 // строим дерево игры
+		p->player = 2; // С…РѕРґРёС‚ РЅРѕР»РёРє
+		generate_moves(p,Move_list); // РіРµРЅРµСЂРёСЂСѓРµРј РІСЃРµ РІРѕР·РјРѕР¶РЅС‹Рµ РѕС‚РІРµС‚С‹ РЅРѕР»РёРєР°
+		while ( !Move_list.empty() ) // РїРѕРєР° СЃРїРёСЃРѕРє РІРѕР·РјРѕР¶РЅС‹С… РѕС‚РІРµС‚РѕРІ РЅРѕР»РёРєР° РЅРµ РїСѓСЃС‚
+			{						 // СЃС‚СЂРѕРёРј РґРµСЂРµРІРѕ РёРіСЂС‹
 			p->player = 2;
-			domove(&Move_list.front(),p); // ходим
-			value = MinMove(p, depth-1, alpha, beta); // оцениваем
+			domove(&Move_list.front(),p); // С…РѕРґРёРј
+			value = MinMove(p, depth-1, alpha, beta); // РѕС†РµРЅРёРІР°РµРј
 
-			if (value >= bestvalue) { // ищем лучший ход из возможных
+			if (value >= bestvalue) { // РёС‰РµРј Р»СѓС‡С€РёР№ С…РѕРґ РёР· РІРѕР·РјРѕР¶РЅС‹С…
 				bestvalue = value;
-				alpha = bestvalue; // определяем значение альфа
-				step = Move_list.front(); // если текущий ход лучше предыдущего, сохраняем ход
+				alpha = bestvalue; // РѕРїСЂРµРґРµР»СЏРµРј Р·РЅР°С‡РµРЅРёРµ Р°Р»СЊС„Р°
+				step = Move_list.front(); // РµСЃР»Рё С‚РµРєСѓС‰РёР№ С…РѕРґ Р»СѓС‡С€Рµ РїСЂРµРґС‹РґСѓС‰РµРіРѕ, СЃРѕС…СЂР°РЅСЏРµРј С…РѕРґ
 				}
 
-			undomove(&Move_list.front(),p); // отменяем сделанный ход
-			Move_list.pop_front(); // освобождаем список ходов от проверенного
+			undomove(&Move_list.front(),p); // РѕС‚РјРµРЅСЏРµРј СЃРґРµР»Р°РЅРЅС‹Р№ С…РѕРґ
+			Move_list.pop_front(); // РѕСЃРІРѕР±РѕР¶РґР°РµРј СЃРїРёСЃРѕРє С…РѕРґРѕРІ РѕС‚ РїСЂРѕРІРµСЂРµРЅРЅРѕРіРѕ
 			}
 		return step;
 	}
 int MinMove (position* p, int depth, int alpha, int beta)
 	{
-	int game = check_win(p->board); // проверяем не выйгрышна ли для кого-нибудь позиция
+	int game = check_win(p->board); // РїСЂРѕРІРµСЂСЏРµРј РЅРµ РІС‹Р№РіСЂС‹С€РЅР° Р»Рё РґР»СЏ РєРѕРіРѕ-РЅРёР±СѓРґСЊ РїРѕР·РёС†РёСЏ
 	if (game == 1) return -INFINITY;
 	else if (game == 2) return INFINITY;
 	
-	if (depth == 0)  // если достигли заданной глубины, оцениваем терминальные вершины
+	if (depth == 0)  // РµСЃР»Рё РґРѕСЃС‚РёРіР»Рё Р·Р°РґР°РЅРЅРѕР№ РіР»СѓР±РёРЅС‹, РѕС†РµРЅРёРІР°РµРј С‚РµСЂРјРёРЅР°Р»СЊРЅС‹Рµ РІРµСЂС€РёРЅС‹
 		return evaluate_position(p->board);
 
 	int bestvalue = INFINITY;
 	std::list < Move > Move_list;	
 
-	p->player = 1; // играет крестик
-	generate_moves(p, Move_list); // генерирум все возможные ходы крестика
+	p->player = 1; // РёРіСЂР°РµС‚ РєСЂРµСЃС‚РёРє
+	generate_moves(p, Move_list); // РіРµРЅРµСЂРёСЂСѓРј РІСЃРµ РІРѕР·РјРѕР¶РЅС‹Рµ С…РѕРґС‹ РєСЂРµСЃС‚РёРєР°
 
-	while ( !Move_list.empty() ) // пока список не пуст, ищем лучший ход - минимальную оценку позиции
+	while ( !Move_list.empty() ) // РїРѕРєР° СЃРїРёСЃРѕРє РЅРµ РїСѓСЃС‚, РёС‰РµРј Р»СѓС‡С€РёР№ С…РѕРґ - РјРёРЅРёРјР°Р»СЊРЅСѓСЋ РѕС†РµРЅРєСѓ РїРѕР·РёС†РёРё
 		{
-			p->player = 1; // крестик
-			domove(&Move_list.front(),p); // делаем ход
-			int value = MaxMove(p, depth-1, alpha, beta); // оцениваем
+			p->player = 1; // РєСЂРµСЃС‚РёРє
+			domove(&Move_list.front(),p); // РґРµР»Р°РµРј С…РѕРґ
+			int value = MaxMove(p, depth-1, alpha, beta); // РѕС†РµРЅРёРІР°РµРј
 			
-			if ( value <= bestvalue ) { // ищем минимальную
-				beta = value; // определяем значение бета
+			if ( value <= bestvalue ) { // РёС‰РµРј РјРёРЅРёРјР°Р»СЊРЅСѓСЋ
+				beta = value; // РѕРїСЂРµРґРµР»СЏРµРј Р·РЅР°С‡РµРЅРёРµ Р±РµС‚Р°
 				bestvalue = value;
 			}
-			undomove(&Move_list.front(),p); // отменяем сделанный ход
-			Move_list.pop_front(); // убираем его из списка возможных ходов
+			undomove(&Move_list.front(),p); // РѕС‚РјРµРЅСЏРµРј СЃРґРµР»Р°РЅРЅС‹Р№ С…РѕРґ
+			Move_list.pop_front(); // СѓР±РёСЂР°РµРј РµРіРѕ РёР· СЃРїРёСЃРєР° РІРѕР·РјРѕР¶РЅС‹С… С…РѕРґРѕРІ
 
-			if ( beta < alpha ) { // если лучший ход меньше чем родитель - альфа
-				// то прерываем поиск
+			if ( beta < alpha ) { // РµСЃР»Рё Р»СѓС‡С€РёР№ С…РѕРґ РјРµРЅСЊС€Рµ С‡РµРј СЂРѕРґРёС‚РµР»СЊ - Р°Р»СЊС„Р°
+				// С‚Рѕ РїСЂРµСЂС‹РІР°РµРј РїРѕРёСЃРє
 			//std::cout << "beta pruning" << std::endl;
 			break;
 				return bestvalue;
@@ -257,7 +257,7 @@ int MinMove (position* p, int depth, int alpha, int beta)
 
 int MaxMove (position* p, int depth, int alpha, int beta)
 	{
-	int game = check_win(p->board); // проверяем не выигрышна ли комбинация
+	int game = check_win(p->board); // РїСЂРѕРІРµСЂСЏРµРј РЅРµ РІС‹РёРіСЂС‹С€РЅР° Р»Рё РєРѕРјР±РёРЅР°С†РёСЏ
 
 	if (game == 1) return -INFINITY;
 	else if (game == 2) return INFINITY;
@@ -269,31 +269,31 @@ int MaxMove (position* p, int depth, int alpha, int beta)
 	std::list < Move > Move_list;	
 
 	p->player = 2;
-	generate_moves(p, Move_list); // генерируем все возможные ходы нолика
+	generate_moves(p, Move_list); // РіРµРЅРµСЂРёСЂСѓРµРј РІСЃРµ РІРѕР·РјРѕР¶РЅС‹Рµ С…РѕРґС‹ РЅРѕР»РёРєР°
 
-	while( !Move_list.empty() ) // пока список не пуст
+	while( !Move_list.empty() ) // РїРѕРєР° СЃРїРёСЃРѕРє РЅРµ РїСѓСЃС‚
 		{
-			p->player = 2; // ходит нолик
-			domove(&Move_list.front(),p); // делаем ход
-			int value = MinMove(p, depth-1, alpha, beta); // оцениваем позицию
+			p->player = 2; // С…РѕРґРёС‚ РЅРѕР»РёРє
+			domove(&Move_list.front(),p); // РґРµР»Р°РµРј С…РѕРґ
+			int value = MinMove(p, depth-1, alpha, beta); // РѕС†РµРЅРёРІР°РµРј РїРѕР·РёС†РёСЋ
 
-			if ( value >= bestvalue ) { // ищем наилучший ход
+			if ( value >= bestvalue ) { // РёС‰РµРј РЅР°РёР»СѓС‡С€РёР№ С…РѕРґ
 				bestvalue = value;
 				alpha = bestvalue;
 				}	
 
-			undomove(&Move_list.front(), p); // отменяем сделанный ход
-			Move_list.pop_front(); // удаляем ход из списка
+			undomove(&Move_list.front(), p); // РѕС‚РјРµРЅСЏРµРј СЃРґРµР»Р°РЅРЅС‹Р№ С…РѕРґ
+			Move_list.pop_front(); // СѓРґР°Р»СЏРµРј С…РѕРґ РёР· СЃРїРёСЃРєР°
 
-			if ( alpha > beta ) { // если оценка больше чем наилучшая оценка родителя
+			if ( alpha > beta ) { // РµСЃР»Рё РѕС†РµРЅРєР° Р±РѕР»СЊС€Рµ С‡РµРј РЅР°РёР»СѓС‡С€Р°СЏ РѕС†РµРЅРєР° СЂРѕРґРёС‚РµР»СЏ
 			//std::cout << "alpha pruning" << std::endl;
 			break;
-			return bestvalue; // прерываем перебор
+			return bestvalue; // РїСЂРµСЂС‹РІР°РµРј РїРµСЂРµР±РѕСЂ
 				}
 			}
 	return bestvalue;
 }
-/*Мартица начального состояния*/
+/*РњР°СЂС‚РёС†Р° РЅР°С‡Р°Р»СЊРЅРѕРіРѕ СЃРѕСЃС‚РѕСЏРЅРёСЏ*/
 int mtr[10][10] = {	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,
 					0,	0,	0,	0,	0,	0,	0,	0,	0,	0,
 					0,	0,	0,	0,	0,	0,	0,	0,	0,	0,
@@ -305,7 +305,7 @@ int mtr[10][10] = {	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,
 					0,	0,	0,	0,	0,	0,	0,	0,	0,	0,
 					0,	0,	0,	0,	0,	0,	0,	0,	0,	0 };
 
-/*Начальная матрица*/
+/*РќР°С‡Р°Р»СЊРЅР°СЏ РјР°С‚СЂРёС†Р°*/
 int stdd[10][10] = {	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,
 					0,	0,	0,	0,	0,	0,	0,	0,	0,	0,
 					0,	0,	0,	0,	0,	0,	0,	0,	0,	0,
@@ -319,10 +319,10 @@ int stdd[10][10] = {	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,
 
 gboolean destroy(GtkWidget *widget);
 gint delete_event(GtkWidget *widget);
-gboolean gdk_draw_picture(GdkPixbuf*,gint,gint,int,int); // вывести изображение на экран
-gboolean creat_state(GtkWidget *widget, GdkEventExpose *event, gpointer data); // создать состояние
-gboolean on_click(GtkWidget *Window, GdkEventButton *event, gpointer data); // обработка нажатия кнопок на мышке
-gboolean creatboomstate(); // отображает состояние на экран
+gboolean gdk_draw_picture(GdkPixbuf*,gint,gint,int,int); // РІС‹РІРµСЃС‚Рё РёР·РѕР±СЂР°Р¶РµРЅРёРµ РЅР° СЌРєСЂР°РЅ
+gboolean creat_state(GtkWidget *widget, GdkEventExpose *event, gpointer data); // СЃРѕР·РґР°С‚СЊ СЃРѕСЃС‚РѕСЏРЅРёРµ
+gboolean on_click(GtkWidget *Window, GdkEventButton *event, gpointer data); // РѕР±СЂР°Р±РѕС‚РєР° РЅР°Р¶Р°С‚РёСЏ РєРЅРѕРїРѕРє РЅР° РјС‹С€РєРµ
+gboolean creatboomstate(); // РѕС‚РѕР±СЂР°Р¶Р°РµС‚ СЃРѕСЃС‚РѕСЏРЅРёРµ РЅР° СЌРєСЂР°РЅ
 
 gboolean destroy(GtkWidget *widget)
 {
@@ -428,7 +428,7 @@ gboolean creat_state(GtkWidget *widget, GdkEventExpose *event, gpointer data)
 	return TRUE;
 }
 
-// обрабатываем нажатие на мышку и создаем ответный ход компьютера
+// РѕР±СЂР°Р±Р°С‚С‹РІР°РµРј РЅР°Р¶Р°С‚РёРµ РЅР° РјС‹С€РєСѓ Рё СЃРѕР·РґР°РµРј РѕС‚РІРµС‚РЅС‹Р№ С…РѕРґ РєРѕРјРїСЊСЋС‚РµСЂР°
 gboolean on_click(GtkWidget *Window, GdkEventButton *event, gpointer data)
 {		
 		x_mouse = event->x;
@@ -464,7 +464,7 @@ gboolean on_click(GtkWidget *Window, GdkEventButton *event, gpointer data)
 				mtr[x_b][y_b] = 1;
 				stdd[x_b][y_b] = 1;
 				gdk_draw_picture(kp,x_b*RR,y_b*RR,RR,RR);
-				// Здесь используется альфа-бета процедура, которая возвращает лучший ход
+				// Р—РґРµСЃСЊ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ Р°Р»СЊС„Р°-Р±РµС‚Р° РїСЂРѕС†РµРґСѓСЂР°, РєРѕС‚РѕСЂР°СЏ РІРѕР·РІСЂР°С‰Р°РµС‚ Р»СѓС‡С€РёР№ С…РѕРґ
 					{
 					position p;
 					Move step;
